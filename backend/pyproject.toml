@@ -1,0 +1,47 @@
+[project]
+name = "spotter-truck-routing"
+version = "0.1.0"
+description = "Weather-aware truck routing API (Django + DRF)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "django>=5.2,<5.3",
+    "djangorestframework>=3.16,<3.17",
+    "django-cors-headers>=4.7",
+    "dj-database-url>=2.3",
+    "psycopg[binary]>=3.2",
+    "redis>=5.2",
+    "httpx>=0.28",
+    "shapely>=2.1",
+    "polyline>=2.0",
+    "gunicorn>=23.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-django>=4.11",
+    "ruff>=0.11",
+    "mypy>=1.15",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+extend-per-file-ignores = { "*/migrations/*" = ["E501"] }
+select = ["E", "F", "I", "B", "UP", "SIM", "DJ"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["routing/domain"]
+
+[[tool.mypy.overrides]]
+module = ["shapely", "shapely.*"]
+ignore_missing_imports = true

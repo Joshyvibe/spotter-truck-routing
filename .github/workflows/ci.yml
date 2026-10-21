@@ -1,0 +1,50 @@
+# Checks from docs/DESIGN.md §9 and docs/TECHNICAL_DESIGN.md §5.
+# No secrets needed: tests use the offline fixture providers and SQLite, never live APIs.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - run: uv sync --frozen
+      - run: uv run ruff check routing config
+      - run: uv run ruff format --check routing config
+      - run: uv run mypy
+      - run: uv run pytest
+      - name: Production image builds
+        run: docker build -t spotter-api:ci .
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npx tsc -b --noEmit
+      - run: npx eslint .
+      - run: npx vitest run
+      - run: npx vite build

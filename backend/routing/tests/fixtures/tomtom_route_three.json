@@ -1,0 +1,253 @@
+{
+ "formatVersion": "0.0.12",
+ "routes": [
+  {
+   "summary": {
+    "lengthInMeters": 48000,
+    "travelTimeInSeconds": 4200,
+    "trafficDelayInSeconds": 0,
+    "departureTime": "2026-10-21T08:00:00-05:00",
+    "arrivalTime": "2026-10-21T09:10:00-05:00"
+   },
+   "legs": [
+    {
+     "summary": {
+      "lengthInMeters": 48000,
+      "travelTimeInSeconds": 4200
+     },
+     "points": [
+      {
+       "latitude": 41.8781,
+       "longitude": -87.6298
+      },
+      {
+       "latitude": 41.8881,
+       "longitude": -87.6798
+      },
+      {
+       "latitude": 41.89810000000001,
+       "longitude": -87.7298
+      },
+      {
+       "latitude": 41.908100000000005,
+       "longitude": -87.77980000000001
+      },
+      {
+       "latitude": 41.9181,
+       "longitude": -87.8298
+      },
+      {
+       "latitude": 41.9281,
+       "longitude": -87.8798
+      },
+      {
+       "latitude": 41.938100000000006,
+       "longitude": -87.9298
+      },
+      {
+       "latitude": 41.948100000000004,
+       "longitude": -87.9798
+      },
+      {
+       "latitude": 41.9581,
+       "longitude": -88.02980000000001
+      },
+      {
+       "latitude": 41.96810000000001,
+       "longitude": -88.0798
+      },
+      {
+       "latitude": 41.978100000000005,
+       "longitude": -88.1298
+      }
+     ]
+    }
+   ],
+   "guidance": {
+    "instructions": [
+     {
+      "routeOffsetInMeters": 0,
+      "travelTimeInSeconds": 0,
+      "pointIndex": 0,
+      "maneuver": "DEPART"
+     },
+     {
+      "routeOffsetInMeters": 15000,
+      "travelTimeInSeconds": 1800,
+      "pointIndex": 3,
+      "maneuver": "MOTORWAY_ENTER"
+     },
+     {
+      "routeOffsetInMeters": 40000,
+      "travelTimeInSeconds": 3000,
+      "pointIndex": 8,
+      "maneuver": "MOTORWAY_EXIT"
+     },
+     {
+      "routeOffsetInMeters": 48000,
+      "travelTimeInSeconds": 4200,
+      "pointIndex": 10,
+      "maneuver": "ARRIVE"
+     }
+    ]
+   }
+  },
+  {
+   "summary": {
+    "lengthInMeters": 52000,
+    "travelTimeInSeconds": 4500,
+    "trafficDelayInSeconds": 0,
+    "departureTime": "2026-10-21T08:00:00-05:00",
+    "arrivalTime": "2026-10-21T09:10:00-05:00"
+   },
+   "legs": [
+    {
+     "summary": {
+      "lengthInMeters": 52000,
+      "travelTimeInSeconds": 4500
+     },
+     "points": [
+      {
+       "latitude": 41.89810000000001,
+       "longitude": -87.6298
+      },
+      {
+       "latitude": 41.908100000000005,
+       "longitude": -87.6798
+      },
+      {
+       "latitude": 41.91810000000001,
+       "longitude": -87.7298
+      },
+      {
+       "latitude": 41.92810000000001,
+       "longitude": -87.77980000000001
+      },
+      {
+       "latitude": 41.938100000000006,
+       "longitude": -87.8298
+      },
+      {
+       "latitude": 41.948100000000004,
+       "longitude": -87.8798
+      },
+      {
+       "latitude": 41.95810000000001,
+       "longitude": -87.9298
+      },
+      {
+       "latitude": 41.96810000000001,
+       "longitude": -87.9798
+      },
+      {
+       "latitude": 41.978100000000005,
+       "longitude": -88.02980000000001
+      },
+      {
+       "latitude": 41.98810000000001,
+       "longitude": -88.0798
+      },
+      {
+       "latitude": 41.99810000000001,
+       "longitude": -88.1298
+      }
+     ]
+    }
+   ],
+   "guidance": {
+    "instructions": []
+   }
+  },
+  {
+   "summary": {
+    "lengthInMeters": 55000,
+    "travelTimeInSeconds": 4800,
+    "trafficDelayInSeconds": 0,
+    "departureTime": "2026-10-21T08:00:00-05:00",
+    "arrivalTime": "2026-10-21T09:10:00-05:00"
+   },
+   "legs": [
+    {
+     "summary": {
+      "lengthInMeters": 55000,
+      "travelTimeInSeconds": 4800
+     },
+     "points": [
+      {
+       "latitude": 41.8581,
+       "longitude": -87.6298
+      },
+      {
+       "latitude": 41.8681,
+       "longitude": -87.6798
+      },
+      {
+       "latitude": 41.8781,
+       "longitude": -87.7298
+      },
+      {
+       "latitude": 41.8881,
+       "longitude": -87.77980000000001
+      },
+      {
+       "latitude": 41.8981,
+       "longitude": -87.8298
+      },
+      {
+       "latitude": 41.9081,
+       "longitude": -87.8798
+      },
+      {
+       "latitude": 41.9181,
+       "longitude": -87.9298
+      },
+      {
+       "latitude": 41.9281,
+       "longitude": -87.9798
+      },
+      {
+       "latitude": 41.9381,
+       "longitude": -88.02980000000001
+      },
+      {
+       "latitude": 41.948100000000004,
+       "longitude": -88.0798
+      },
+      {
+       "latitude": 41.9581,
+       "longitude": -88.1298
+      }
+     ]
+    }
+   ],
+   "guidance": {
+    "instructions": [
+     {
+      "routeOffsetInMeters": 0,
+      "travelTimeInSeconds": 0,
+      "pointIndex": 0,
+      "maneuver": "DEPART"
+     },
+     {
+      "routeOffsetInMeters": 15000,
+      "travelTimeInSeconds": 1800,
+      "pointIndex": 3,
+      "maneuver": "MOTORWAY_ENTER"
+     },
+     {
+      "routeOffsetInMeters": 40000,
+      "travelTimeInSeconds": 3000,
+      "pointIndex": 8,
+      "maneuver": "MOTORWAY_EXIT"
+     },
+     {
+      "routeOffsetInMeters": 48000,
+      "travelTimeInSeconds": 4200,
+      "pointIndex": 10,
+      "maneuver": "ARRIVE"
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# OS / tools
+.DS_Store
+.qodo/
+
+# Assessment brief (not redistributed)
+fs-assessment-spotter.pdf
+
+# TypeScript incremental build info (a stale copy can make tsc -b skip checks)
+*.tsbuildinfo
