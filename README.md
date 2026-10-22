@@ -2,11 +2,9 @@
 
 A React + Django app that helps a truck driver choose the safest of 3 routes, using the forecast **at the truck's ETA** at each checkpoint, the **load weight**, and **travel time**.
 
-**Live app:** _add the Vercel URL after deploy_ · **API:** _add the Railway URL after deploy_ · **Walkthrough:** _add the Loom link_
+**Live app:** [spotter-truck-routing-omega.vercel.app](https://spotter-truck-routing-omega.vercel.app) · **API:** [p01--spotter-truck-routing--8zfwjn862f7f.code.run/api/v1/health](https://p01--spotter-truck-routing--8zfwjn862f7f.code.run/api/v1/health) · **Walkthrough:** [Loom video](https://www.loom.com/share/c97f49ffb56743faa0e87bc17e4e14b4)
 
-<!-- Screenshot or GIF: add docs/screenshot.png (or .gif) and uncomment the line below.
-![Planner with 3 routes, risk-coloured checkpoints and the 0–48 h corridor heatmap](docs/screenshot.png)
--->
+![Salt Lake City to Great Falls at 42,000 lb: 3 routes, risk-coloured checkpoints, a checkpoint popup and the 0–48 h corridor heatmap](docs/screenshot.png)
 
 ## What it does
 
@@ -27,7 +25,7 @@ docker compose up --build
 
 - App: http://localhost:5173
 - API: http://localhost:8000/api/v1/health
-
+`
 `docker compose` starts Postgres, Redis, the API and the Vite dev server. To work without live APIs, use the offline providers: `WEATHER_PROVIDER=fixture` replays a recorded real Open-Meteo snapshot, and `ROUTING_PROVIDER=fixture` gives synthetic routes. For example:
 
 ```bash
@@ -51,7 +49,7 @@ The tests never call live APIs. They cover every boundary of the risk table (24.
 ```
 React 18 + TS + MUI + MapLibre (react-map-gl) + TanStack Query      ── Vercel
         │  REST/JSON  /api/v1/…
-Django + DRF modular monolith                                         ── Railway
+Django + DRF modular monolith                                         ── Northflank
   api/        serializers, thin views, one error envelope
   services/   plan_trip, heatmap, caching, route fill
   domain/     risk, checkpoints, weather_at_eta, ranking, corridor   ← pure, fully tested
@@ -102,26 +100,26 @@ Every error has the same shape: `{"error": {"code", "message", "field", "request
 | `DJANGO_SECRET_KEY` | API | Required in production |
 | `DATABASE_URL` | API | Postgres (Neon in production; add `?sslmode=require`) |
 | `REDIS_URL` | API | Redis (Upstash in production, `rediss://…`); in-memory cache if unset |
-| `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` | API | Railway host (plus `healthcheck.railway.app`) / Vercel URL |
+| `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` | API | Northflank host (`*.code.run`) / Vercel URL |
 | `ROUTING_PROVIDER`, `WEATHER_PROVIDER` | API | Optional: `tomtom`/`openmeteo` by default; `osrm` or `fixture` to switch |
 | `VITE_API_URL` | Web | API origin in production (empty in dev: Vite proxies `/api`) |
 | `VITE_MAP_STYLE_URL` | Web | Optional map style (OpenFreeMap Positron by default) |
 
 ## Deploying
 
-Hosting: the **API on Railway** (DESIGN §10 lists it as the alternative to Cloud Run), the **frontend on Vercel**, **Postgres on Neon** and **Redis on Upstash**. CI (`.github/workflows/ci.yml`) runs every check above on each push and pull request. One-time setup:
+Live setup: the **API on Northflank** (free Developer Sandbox, always on), the **frontend on Vercel**, **Postgres on Neon** and **Redis on Upstash**. CI (`.github/workflows/ci.yml`) runs every check above on each push and pull request. One-time setup:
 
-1. **Database and cache:** create a free Neon Postgres and an Upstash Redis in a US-East region. Keep their connection strings (add `?sslmode=require` to Neon's; Upstash's starts with `rediss://`).
-2. **Railway API:** New Project → *Deploy from GitHub repo* → this repo. In the service's settings:
-   - **Root Directory:** `/backend`, and **Config file path:** `/backend/railway.json`. Railway reads the config file from the repo root, not the root directory. The file selects the Dockerfile build, the `/api/v1/health` deploy health check and a restart-on-failure policy, and rebuilds only when `backend/` changes.
-   - **Variables:** `DJANGO_SECRET_KEY` (a long random string), `DATABASE_URL`, `REDIS_URL`, `TOMTOM_API_KEY`, `CORS_ALLOWED_ORIGINS` (the Vercel URL), and `ALLOWED_HOSTS` = `<your-service>.up.railway.app,healthcheck.railway.app`. Railway's deploy health check uses the `healthcheck.railway.app` host, and Django rejects hosts that are not allowed. `PORT` is set by Railway; the image already runs the production settings.
-   - **Networking:** *Generate Domain* to get the public `*.up.railway.app` URL.
-   - Turn on *Wait for CI* if your plan offers it, so a deploy only goes out after CI passes. Leave App Sleeping off so the reviewer never waits for a cold start.
-   - Railway is paid after its trial credit; check current pricing. The API is the only service that runs on Railway.
-3. **Frontend:** import the repo on Vercel with root directory `frontend` and set `VITE_API_URL` to the Railway URL. `vercel.json` rewrites every path to the SPA, so `/plans/:id` links work on refresh.
-4. **Check:** `curl https://<your-service>.up.railway.app/api/v1/health` should return `{"status": "ok"}`. Then plan one trip on the Vercel URL.
+1. **Database and cache:** create a free Neon Postgres and an Upstash Redis in a US region. Use Neon's direct connection string with `?sslmode=require`. For Upstash, take the URL from its `redis-cli` command and change `redis://` to `rediss://` (TLS).
+2. **Northflank API:** create a project on Northflank Cloud (US - Central) and connect GitHub. Then **Create new → Service → Combined service** from this repo, branch `main`:
+   - **Build:** Dockerfile, **build context** `/backend`, **Dockerfile location** `/backend/Dockerfile` (an absolute path from the repo root).
+   - **Networking:** port `8080`, HTTP, publicly exposed.
+   - **Health check:** none, or TCP on 8080. Not HTTP: Northflank's HTTP probe sends the container IP as the host, which Django rejects.
+   - **Runtime variables:** `PORT=8080`, `DJANGO_SECRET_KEY` (a long random string), `DATABASE_URL`, `REDIS_URL`, `TOMTOM_API_KEY`, `ALLOWED_HOSTS` (the service's `*.code.run` host) and `CORS_ALLOWED_ORIGINS` (the Vercel URL, `https`, no trailing slash).
+   - Sandbox needs a card for account verification after the first hour; you are not charged on the free plan.
+3. **Frontend:** import the repo on Vercel with root directory `frontend` and set `VITE_API_URL` to the API URL (no trailing slash). Vercel may warn that `VITE_` values are public; that is intended, because the browser has to know the API address. `vercel.json` rewrites every path to the SPA, so `/plans/:id` links work on refresh.
+4. **Check:** `curl https://p01--spotter-truck-routing--8zfwjn862f7f.code.run/api/v1/health` returns `{"status": "ok"}`. Then plan a trip on the live app.
 
-Migrations run when the container starts (one replica). The app also calls `/api/v1/health` when it loads, which wakes the API if sleeping is ever turned on.
+Migrations run when the container starts (one instance). The app calls `/api/v1/health` when it loads, which is harmless on an always-on service.
 
 ## Known limits
 

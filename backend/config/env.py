@@ -1,4 +1,4 @@
-"""Load ``backend/.env`` for local runs (Docker and Railway pass real env vars instead).
+"""Load ``backend/.env`` for local runs (Docker and the host pass real env vars instead).
 Existing environment variables always win."""
 
 import os

@@ -1,4 +1,4 @@
-"""One-line JSON logs so the host's log viewer (Railway) can filter by request_id and timings."""
+"""One-line JSON logs so the host's log viewer can filter by request_id and timings."""
 
 import json
 import logging

@@ -27,7 +27,7 @@ MIN_TRIP_M = 1_000
 
 
 class HealthView(APIView):
-    """Railway deploy health check and the SPA warm-up ping. No upstream or DB calls."""
+    """Liveness check and the SPA warm-up ping. No upstream or DB calls."""
 
     def get(self, request: Request) -> Response:
         return Response({"status": "ok"})

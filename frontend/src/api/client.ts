@@ -55,6 +55,6 @@ export const api = {
   getHeatmap: (id: string) => request<Heatmap>(`/plans/${encodeURIComponent(id)}/heatmap`),
   geocode: (q: string, signal?: AbortSignal) =>
     request<{ data: Place[] }>(`/geocode?q=${encodeURIComponent(q)}&limit=5`, { signal }),
-  /** Fire-and-forget warm-up: wakes a sleeping API instance (e.g. Railway App Sleeping) while the user types. */
+  /** Fire-and-forget warm-up: wakes a sleeping API instance (if the host sleeps) while the user types. */
   warmUp: () => fetch(BASE + '/health').catch(() => undefined),
 };
